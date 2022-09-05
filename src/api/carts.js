@@ -2,45 +2,42 @@ import Logger from "../services/logger";
 import Config from "../config";
 import CartsFactoryDAO from "../models/cart/DAOS/factory";
 
-export default class ApiCart{
-    constructor() {
-        this.cartsDAO = CartsFactoryDAO.get(Config.PERSISTENCE)
-    }
+export default class ApiCart {
+  constructor() {
+    this.cartsDAO = CartsFactoryDAO.get(Config.PERSISTENCE);
+  }
 
-    //MÉTODOS
+  async createCart(userId) {
+    Logger.info("Creando Carro en la BD | API");
+    return this.cartsDAO.createCart(userId);
+  }
+  async getCartByUser(id) {
+    Logger.info("Leyendo Carro de la BD | API");
+    return this.cartsDAO.get(id);
+  }
+  async addProducts(cartId, productId, amount) {
+    Logger.info("Agregando productos al Carro en la BD | API");
+    return this.cartsDAO.post(cartId, productId, amount);
+  }
 
-    async createCart(userId) {
-        Logger.info('Creating CART in the DB');
-        return this.cartsDAO.createCart(userId)
-    }
-    async getCartByUser(id) {
-        Logger.info('Reading CART database from DB');
-        return this.cartsDAO.get(id)
-    }
-    async addProducts(cartId, productId, amount) { 
-        Logger.info('Adding products to the cart in the DB');
-        return this.cartsDAO.post(cartId, productId, amount)
-    };
-    
-    async deleteProducts(cartId, productId, amount) {
-        Logger.info('Deleting an item in cart in the DB');
-        return this.cartsDAO.delete(cartId, productId, amount);
-    }
+  async deleteProducts(cartId, productId, amount) {
+    Logger.info("Borrando 1 producto del Carro en la BD | API");
+    return this.cartsDAO.delete(cartId, productId, amount);
+  }
 
-    async emptyCart(cartId) {
-        Logger.info('Deleting an item in cart in the DB');
-        return this.cartsDAO.emptyCart(cartId);
-    }
+  async emptyCart(cartId) {
+    Logger.info("Carro vacio en la BD | API");
+    return this.cartsDAO.emptyCart(cartId);
+  }
 
-    async deleteCart(cartId) {
-        console.log('CART--API', cartId);
-        Logger.info('Deleting a cart in the DB');
-        return this.cartsDAO.deleteCart(cartId);
-    }
+  async deleteCart(cartId) {
+    Logger.info("Borrando carro en la DB | API");
+    return this.cartsDAO.deleteCart(cartId);
+  }
 }
 
-const ApiCarts = new ApiCart()
+const ApiCarts = new ApiCart();
 
 module.exports = {
-    ApiCarts
-}
+  ApiCarts,
+};
