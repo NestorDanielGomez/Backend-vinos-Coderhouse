@@ -14,11 +14,9 @@ export default class ProductsController {
         data: products,
       });
     } catch (error) {
-      Logger.error(
-        "Ocurrio un error al intentar acceder a los productos desde la db"
-      );
+      Logger.error("Error al intentar acceder al producto | Controller");
       res.status(400).json({
-        msg: "Ocurrio un error al intentar acceder a los productos desde la db",
+        msg: "Error al intentar acceder al producto | Controller",
         error: error,
       });
     }
@@ -33,9 +31,9 @@ export default class ProductsController {
         data: productPosted,
       });
     } catch (error) {
-      Logger.error("Ocurrio un error al crear un producto en la db");
+      Logger.error("Error al crear un producto en la db | Controller");
       res.status(400).json({
-        msg: "Ocurrio un error al crear un producto en la db",
+        msg: "Error al crear un producto en la db | Controller:",
         error: error,
       });
     }
@@ -52,9 +50,9 @@ export default class ProductsController {
         data: updatedProduct,
       });
     } catch (error) {
-      Logger.error("Ocurrio un error al intentar actualizar producto en la db");
+      Logger.error("Error al actualizar un producto en la db | Controller");
       res.status(400).json({
-        msg: "Ocurrio un error al intentar actualizar producto en la db",
+        msg: "Error al actualizar un producto en la db | Controller",
         error: error,
       });
     }
@@ -69,9 +67,9 @@ export default class ProductsController {
         msg: "Producto borrado con exito",
       });
     } catch (error) {
-      Logger.error("Ocurrio un error al intentar borrar el producto en la db");
+      Logger.error("Error al borrar un producto en la db | Controller");
       res.status(400).json({
-        msg: "Ocurrio un error al intentar borrar el producto en la db",
+        msg: "Error al borrar un producto en la db | Controller:",
         error: error,
       });
     }

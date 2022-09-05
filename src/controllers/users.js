@@ -1,130 +1,123 @@
 import ApiUsers from "../api/users";
 import Logger from "../services/logger";
-import { generateAuthToken, checkAuth } from '../services/auth'
-import { UserModel } from "../models/users/DAOS/mongo";
+import { generateAuthToken, checkAuth } from "../services/auth";
 
-export default class UserController{
-    constructor() {
-        this.ApiUsers = new ApiUsers();
+export default class UserController {
+  constructor() {
+    this.ApiUsers = new ApiUsers();
+  }
+
+  getUsers = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const users = await this.ApiUsers.getUser(id);
+
+      res.status(200).json({
+        data: users,
+      });
+    } catch (error) {
+      Logger.error("Error al intentar acceder al usuario | Controller");
+      res.status(400).json({
+        msg: "Error al intentar acceder al usuario | Controller:",
+        error: error,
+      });
     }
+  };
 
-    getUsers = async ( req, res ) => {
-        try {
-            const { id } = req.params
-            const users = await this.ApiUsers.getUser(id)
-            
-            res.status(200).json({
-                data: users
-            })
-        } catch (error) {
-            Logger.error('API ERROR occurred when trying to read the users from the DB')
-            res.status(400).json({
-                msg: 'API ERROR occurred when trying to read the users from the DB',
-                error: error
-            })
-        }
+  getUserByEmail = async (req, res) => {
+    try {
+      const { email } = req.params;
+      const user = ApiUsers.getUserByEmail(email);
+
+      res.status(200).json({
+        data: user,
+      });
+    } catch (error) {
+      Logger.error("Error al intentar leer el usuario | Controller");
+      res.status(400).json({
+        msg: "Error al intentar leer el usuario | Controller:",
+        error: error,
+      });
     }
+  };
 
-    getUserByEmail = async ( req, res ) =>{
-        try { 
-            const { email } = req.params
-            const user = ApiUsers.getUserByEmail(email)
+  signupUser = async (req, res) => {
+    try {
+      const newUser = req.body;
+      Logger.info("Creating User...");
+      const userCreated = await this.ApiUsers.postUser(newUser);
 
-            res.status(200).json({
-                data: user
-            })
-            
-        } catch (error) {
-            Logger.error('API ERROR occurred when trying to read the users from the DB')
-            res.status(400).json({
-                msg: 'API ERROR occurred when trying to read the users from the DB',
-                error: error
-            })
-        }
+      res.status(201).json({
+        msg: "Usuario creado con exito",
+        data: {
+          userCreated,
+        },
+      });
+    } catch (error) {
+      Logger.error("Error al intentar crear el usuario | Controller");
+      res.status(400).json({
+        msg: "Error al intentar crear el usuario | Controller",
+        error: error,
+      });
     }
+  };
 
+  loginUser = async (req, res) => {
+    const { email, password } = req.body;
+    Logger.info("Buscando usuario...");
 
-    signupUser = async ( req, res ) => {
-        try {
-            const newUser= req.body
-            Logger.info('Creating User...')
-            const userCreated = await this.ApiUsers.postUser(newUser)
-        
+    const user = await this.ApiUsers.getUserByEmailUser(email);
 
-            res.status(201).json({
-                msg: 'User created successfully',
-                data: {
-                   userCreated
-                }
-            })
-        
-        } catch (error) {
-            Logger.error('API ERROR occurred when trying to create a user in the DB')
-            res.status(400).json({
-                msg: 'API ERROR occurred when trying to create a user in the DB',
-                error: error
-            })
-        }
+    if (!user || !user.isValidPassword(password))
+      return res.status(401).json({ msg: "Usuario o Contraseña incorrectos" });
+
+    const token = generateAuthToken(user);
+
+    res.header("x-auth-token", token).json({
+      msg: "LOGIN OK",
+      token,
+    });
+  };
+
+  putUser = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const newData = req.body;
+      const updatedUser = await this.ApiUsers.putUser(id, newData);
+
+      res.status(201).json({
+        msg: "Usuario actualizado con exito",
+        data: updatedUser,
+      });
+    } catch (error) {
+      Logger.error("Error al intentar actualizar el usuario | Controller");
+      res.status(400).json({
+        msg: "Error al intentar actualizar el usuario | Controller:",
+        error: error,
+      });
     }
+  };
 
-    //Login 
-    loginUser = async ( req, res ) => {
-        const {email, password} = req.body
-        Logger.info('Looking for user...')
+  deleteUser = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await this.ApiUsers.deleteUser(id);
 
-        const user = await this.ApiUsers.getUserByEmailUser(email)
-       
-        if (!user || !user.isValidPassword(password))
-            return res.status(401).json({ msg: 'Invalid Username/Password' });
-        
-        const token = generateAuthToken(user)
-        
-        res.header('x-auth-token', token).json({
-            msg: 'login OK',
-            token,
-        });
+      res.status(200).json({
+        msg: "Usuario borrado con exito",
+      });
+    } catch (error) {
+      Logger.error("Error al intentar borrar el usuario | Controller");
+      res.status(400).json({
+        msg: "Error al intentar borrar el usuario | Controller",
+        error: error,
+      });
     }
-
-    putUser = async (req, res) => {
-        try {
-            const { id } = req.params;
-            const newData = req.body;
-            const updatedUser = await this.ApiUsers.putUser(id, newData);
-    
-            res.status(201).json({
-                msg: 'User updated successfully',
-                data: updatedUser,
-            });
-
-        } catch (error) {
-            Logger.error('API ERROR occurred when trying to update a user in the DB');
-            res.status(400).json({
-                msg: 'API ERROR occurred when trying to update a user in the DB',
-                error: error
-            })
-        }
-    };
-        
-    deleteUser = async (req, res, next) => {
-        try {
-            const { id } = req.params;
-            await this.ApiUsers.deleteUser(id);
-        
-            res.status(200).json({
-                msg: 'User deleted successfully',
-            });
-        } catch (error) {
-            Logger.error('API ERROR occurred when trying to delete a user in the DB');
-            res.status(400).json({
-                msg: 'API ERROR occurred when trying to delete a user in the DB',
-                error: error
-            })
-        }
-    };
+  };
 }
 
-const UsersController = new UserController()
+const UsersController = new UserController();
 
 module.exports = {
-    UsersController
-}
+  UsersController,
+};
