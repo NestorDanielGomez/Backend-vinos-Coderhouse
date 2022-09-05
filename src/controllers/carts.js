@@ -4,14 +4,14 @@ import { ApiError, ErrorStatus } from "../services/error";
 
 export default class CartsController {
   constructor() {
-    this.ApiCarts = ApiCarts;
+    this.ApiCart = ApiCarts;
   }
 
   createCart = async (req, res) => {
     try {
       const { userId } = req;
 
-      await this.ApiCarts.createCart(userId);
+      await this.ApiCart.createCart(userId);
     } catch (error) {
       Logger.error("Error al crear el carro | Mongodb");
       res.status(400).json({
@@ -24,7 +24,7 @@ export default class CartsController {
   getCart = async (req, res) => {
     try {
       const { id } = req.params;
-      const cart = await this.ApiCarts.getCartByUser(id);
+      const cart = await this.ApiCart.getCartByUser(id);
 
       res.status(200).json({
         data: cart,
@@ -46,11 +46,11 @@ export default class CartsController {
       if (!productId)
         throw new ApiError("Invalid Body Parameters", ErrorStatus.BadRequest);
 
-      const cart = await this.ApiCarts.getCartByUser(user.id);
+      const cart = await this.ApiCart.getCartByUser(user.id);
 
       const cartId = cart._id.toString();
 
-      const result = await this.ApiCarts.addProducts(cartId, productId, amount);
+      const result = await this.ApiCart.addProducts(cartId, productId, amount);
 
       res.status(200).json({
         msg: "Producto agregado con exito",
