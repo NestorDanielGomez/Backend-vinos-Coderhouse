@@ -1,6 +1,6 @@
 import express from "express";
 import path from "path";
-import exphbs from "express-handlebars";
+import { engine } from "express-handlebars";
 
 import * as http from "http";
 
@@ -21,7 +21,7 @@ const partialDirPath = path.resolve(__dirname, "../../views/partials");
 app.set("view engine", "hbs");
 app.engine(
   "hbs",
-  exphbs({
+  engine({
     layoutsDir: layoutDirPath,
     extname: "hbs",
     defaultLayout: defaultLayerPth,
