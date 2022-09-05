@@ -1,4 +1,4 @@
-import { ApiCarts } from "../api/carts";
+import ApiCarts from "../api/carts";
 import Logger from "../services/logger";
 import { ApiError, ErrorStatus } from "../services/error";
 
@@ -148,8 +148,4 @@ export default class CartsController {
   };
 }
 
-const CartController = new CartsController();
-
-module.exports = {
-  CartController,
-};
+export const CartController = new CartsController();

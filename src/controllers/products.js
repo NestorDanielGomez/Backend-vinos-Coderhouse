@@ -76,8 +76,4 @@ export default class ProductsController {
   };
 }
 
-const ProductController = new ProductsController();
-
-module.exports = {
-  ProductController,
-};
+export const ProductController = new ProductsController();

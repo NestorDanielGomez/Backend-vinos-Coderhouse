@@ -3,7 +3,7 @@ import Config from "../config";
 import BrandsFactoryDAO from "../models/brands/DAOS/factory";
 import Brands from "../models/brands";
 
-export default class ApiCategories {
+export default class ApiBrands {
   constructor() {
     this.brandsDAO = BrandsFactoryDAO.get(Config.PERSISTENCE);
   }
@@ -30,3 +30,5 @@ export default class ApiCategories {
     return this.brandsDAO.delete(id);
   }
 }
+
+export const ApiBrand = new ApiBrands();

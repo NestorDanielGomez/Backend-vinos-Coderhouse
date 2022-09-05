@@ -1,9 +1,9 @@
 import express from "express";
-import { BrandsController } from "../controllers/brands";
+import { BrandController } from "../controllers/brands";
 
 export default class BrandsRouter {
   constructor() {
-    this.Controller = new BrandsController();
+    this.Controller = BrandController;
   }
 
   start() {

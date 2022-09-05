@@ -1,9 +1,9 @@
-import ApiVarietals from "../api/varietals";
+import { ApiVarietal } from "../api/varietals";
 import Logger from "../services/logger";
 
 export default class varietalsController {
   constructor() {
-    this.ApiVarietals = new ApiVarietals();
+    this.ApiVarietals = ApiVarietal;
   }
   getVarietal = async (req, res) => {
     try {
@@ -76,3 +76,5 @@ export default class varietalsController {
     }
   };
 }
+
+export const VarietalController = new varietalsController();

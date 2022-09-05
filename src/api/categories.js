@@ -30,3 +30,5 @@ export default class ApiCategories {
     return this.categoriesDAO.delete(id);
   }
 }
+
+export const ApiCategory = new ApiCategories();

@@ -30,4 +30,4 @@ export default class ApiProducts {
   }
 }
 
-const ApiProduct = new ApiProducts();
+export const ApiProduct = new ApiProducts();

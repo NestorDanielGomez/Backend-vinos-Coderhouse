@@ -1,9 +1,9 @@
 import express from "express";
-import { varietalsController } from "../controllers/categories";
+import { VarietalController } from "../controllers/varietal";
 
 export default class VarietalsRouter {
   constructor() {
-    this.Controller = new varietalsController();
+    this.Controller = VarietalController;
   }
 
   start() {

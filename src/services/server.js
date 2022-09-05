@@ -1,9 +1,7 @@
 import express from "express";
 import path from "path";
 import { engine } from "express-handlebars";
-
 import * as http from "http";
-
 import Logger from "./logger";
 import MainRouter from "../routes";
 

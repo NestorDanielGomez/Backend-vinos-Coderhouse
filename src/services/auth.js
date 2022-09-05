@@ -1,6 +1,6 @@
 import Config from "../config";
 import jwt from "jsonwebtoken";
-import { UsersController } from "../controllers/users";
+import UsersController from "../controllers/users";
 
 export const generateAuthToken = (user) => {
   const payload = {

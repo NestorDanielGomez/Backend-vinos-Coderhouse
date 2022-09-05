@@ -1,9 +1,9 @@
-import ApiCategories from "../api/categories";
+import { ApiCategory } from "../api/categories";
 import Logger from "../services/logger";
 
 export default class CategoriesController {
   constructor() {
-    this.ApiCategories = new ApiCategories();
+    this.ApiCategories = ApiCategory;
   }
   getCategory = async (req, res) => {
     try {
@@ -78,3 +78,5 @@ export default class CategoriesController {
     }
   };
 }
+
+export const CategorieController = new CategoriesController();

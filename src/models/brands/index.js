@@ -15,6 +15,6 @@ export default class Brands {
 
     const { error } = schema.validate(brand);
 
-    if (error) throw new ApiError("Esquema no valido", ErrorStatus.BadRequest);
+    if (error) throw new ApiError("Esquema no valido:", ErrorStatus.BadRequest);
   }
 }

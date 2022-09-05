@@ -1,9 +1,9 @@
-import ApiBrands from "../api/brands";
+import { ApiBrand } from "../api/brands";
 import Logger from "../services/logger";
 
 export default class BrandsController {
   constructor() {
-    this.ApiBrands = new ApiBrands();
+    this.ApiBrands = ApiBrand;
   }
   getBrand = async (req, res) => {
     try {
@@ -76,3 +76,5 @@ export default class BrandsController {
     }
   };
 }
+
+export const BrandController = new BrandsController();

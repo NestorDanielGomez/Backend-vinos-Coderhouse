@@ -4,7 +4,6 @@ import CategoriesRouter from "./categories";
 import BrandsRouter from "./brands";
 import VarietalsRouter from "./varietals";
 import UsersRouter from "./users";
-
 import CartsRouter from "./carts";
 
 export default class MainRouter {

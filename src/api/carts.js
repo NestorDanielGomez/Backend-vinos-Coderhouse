@@ -36,8 +36,4 @@ export default class ApiCart {
   }
 }
 
-const ApiCarts = new ApiCart();
-
-module.exports = {
-  ApiCarts,
-};
+export const ApiCarts = new ApiCart();

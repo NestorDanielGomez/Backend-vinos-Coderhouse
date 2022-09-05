@@ -1,9 +1,9 @@
 import express from "express";
-import { CategoriesController } from "../controllers/categories";
+import { CategorieController } from "../controllers/categories";
 
 export default class CategoriesRouter {
   constructor() {
-    this.Controller = new CategoriesController();
+    this.Controller = CategorieController;
   }
 
   start() {

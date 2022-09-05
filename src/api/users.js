@@ -53,3 +53,5 @@ export default class ApiUsers {
     return this.usersDAO.delete(id);
   }
 }
+
+export const ApiUser = new ApiUsers();

@@ -1,6 +1,6 @@
 import Logger from "../services/logger";
 import Config from "../config";
-import VarietalsFactoryDAO from "../models/brands/DAOS/factory";
+import VarietalsFactoryDAO from "../models/varietals/DAOS/factory";
 import Varietals from "../models/varietals";
 
 export default class ApiVarietals {
@@ -14,13 +14,13 @@ export default class ApiVarietals {
   }
 
   async postVarietal(newData) {
-    await Brands.validate(newData, true);
+    await Varietals.validate(newData, true);
     Logger.info("Creando VARIETAL en la DB | API");
     return this.varietalsDAO.post(newData);
   }
 
   async putVarietal(id, newData) {
-    await Brands.validate(newData, false);
+    await Varietals.validate(newData, false);
     Logger.info("Actualizando VARIETAL en la DB | API");
     return this.varietalsDAO.put(id, newData);
   }
@@ -30,3 +30,5 @@ export default class ApiVarietals {
     return this.varietalsDAO.delete(id);
   }
 }
+
+export const ApiVarietal = new ApiVarietals();

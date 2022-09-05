@@ -1,10 +1,10 @@
-import ApiUsers from "../api/users";
+import { ApiUser } from "../api/users";
 import Logger from "../services/logger";
 import { generateAuthToken, checkAuth } from "../services/auth";
 
 export default class UserController {
   constructor() {
-    this.ApiUsers = new ApiUsers();
+    this.ApiUsers = ApiUser;
   }
 
   getUsers = async (req, res) => {
@@ -116,8 +116,4 @@ export default class UserController {
   };
 }
 
-const UsersController = new UserController();
-
-module.exports = {
-  UsersController,
-};
+export const UsersController = new UserController();
