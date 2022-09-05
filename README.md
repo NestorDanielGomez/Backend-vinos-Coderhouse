@@ -1,4 +1,4 @@
-# Proyecto: 3era Entrega Proyecto Final
+# Proyecto: Proyecto Final
 
 ## Autor: Néstor Gómez
 
