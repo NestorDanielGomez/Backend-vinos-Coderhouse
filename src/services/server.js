@@ -1,30 +1,39 @@
 import express from "express";
-import * as http from "http";
 import path from "path";
+import exphbs from "express-handlebars";
+
+import * as http from "http";
+
 import Logger from "./logger";
 import MainRouter from "../routes";
-import cors from "cors";
 
 const app = express();
-
-const publicPath = path.resolve(__dirname, "../../../client/build");
-app.use(express.static(publicPath));
-
 app.use(express.json());
 
-const corsOptions = {
-  origin: ["http://localhost:3000"],
-  optionSuccessStatus: 200,
-  methods: "GET, POST, PUT, DELETE",
-};
+const publicPath = path.resolve(__dirname, "../../public");
+app.use(express.static(publicPath));
+app.use(express.urlencoded({ extended: true }));
 
-app.use(cors(corsOptions));
+const layoutDirPath = path.resolve(__dirname, "../../views/layouts");
+const defaultLayerPth = path.resolve(__dirname, "../../views/layouts/main.hbs");
+const partialDirPath = path.resolve(__dirname, "../../views/partials");
+
+app.set("view engine", "hbs");
+app.engine(
+  "hbs",
+  exphbs({
+    layoutsDir: layoutDirPath,
+    extname: "hbs",
+    defaultLayout: defaultLayerPth,
+    partialsDir: partialDirPath,
+  })
+);
 
 app.use("/api", MainRouter.start());
 
 app.use((req, res) => {
   res.status(404).json({
-    msg: "Path not found",
+    msg: "Ruta no encontrada",
   });
 });
 

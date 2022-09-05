@@ -47,7 +47,7 @@ export default class BrandsMongoDAO {
     else {
       Logger.error("NO se pudo crear la MARCA | MongoDB");
       throw new ApiError(
-        "ERROR al crear la MARCA documento | MongoDB",
+        "ERROR al crear la MARCA | MongoDB",
         ErrorStatus.BadRequest
       );
     }

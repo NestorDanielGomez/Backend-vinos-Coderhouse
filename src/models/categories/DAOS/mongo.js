@@ -17,7 +17,7 @@ export default class CategoriesMongoDAO {
   }
 
   async get(id) {
-    let output = [];
+    let category = [];
     if (id) {
       const category = await this._categories.findById(id);
       if (category) return [category];
@@ -30,8 +30,8 @@ export default class CategoriesMongoDAO {
       }
     }
 
-    output = await this._categories.find();
-    if (output) return [output];
+    category = await this._categories.find();
+    if (category) return [category];
     else {
       Logger.error("No se pudo traer el listado de CATEGORIAS | MongoDB");
       throw new ApiError(

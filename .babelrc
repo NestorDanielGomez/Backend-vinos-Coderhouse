@@ -1,4 +1,4 @@
 {
-    "presets": ["@babel/preset-env"]
- }
-//LE DECIMO QUE VAMOS A USAR ESTE PLUGIN 
+  "presets": ["@babel/preset-env"],
+  "plugins": [["@babel/transform-runtime"]]
+}

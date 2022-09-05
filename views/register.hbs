@@ -1,0 +1,39 @@
+  <div class="row text-center">
+    <div class="col-6 mx-auto mt-5">
+  <h1>REGISTRARSE</h1>
+  <form
+    class="form"
+    action="/signup"
+    method="post"
+    role="form"
+    autocomplete="off"
+  >
+    <div class="form-group">
+      <input
+        id="username"
+        name="username"
+        placeholder="Tu email"
+        class="form-control"
+        type="email"
+        required
+      />
+      <input
+        type="password"
+        name="password"
+        class="form-control mt-3"
+        id="password"
+        placeholder="Tu contraseña"
+        required
+      />
+    </div>
+    <div class="mb-3 mt-3 text-center">
+      <button type="submit" class="btn btn-outline-success">REGISTRARSE</button>
+      <button
+        class="btn btn-outline-success ms-3"
+        onclick="location.href = '/login'"
+      >LOGIN</button>
+    </div>
+  </form>
+     </div>
+  </div>
+</div>
