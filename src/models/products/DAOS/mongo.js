@@ -5,8 +5,6 @@ import CategoriesFactoryDAO from "../../categories/DAOS/factory";
 import BrandsFactoryDAO from "../../brands/DAOS/factory";
 import VarietalsFactoryDAO from "../../varietals/DAOS/factory";
 
-export const productsCollectionName = "products";
-
 export default class ProductsMongoDAO {
   _schema = new mongoose.Schema(
     {
@@ -34,25 +32,25 @@ export default class ProductsMongoDAO {
     },
     { timestamps: true, versionKey: false }
   );
-  _productos = mongoose.model(productsCollectionName, this._schema);
+  _products = mongoose.model("products", this._schema);
 
   constructor() {
     Logger.info("Colección de productos | MongoDB");
   }
 
   async get(id) {
-    let products = [];
+    let arrayOffProducts = [];
     if (id) {
-      const document = await this._productos.findById(id);
-      if (document) return [document];
+      const product = await this._products.findById(id);
+      if (product) return [product];
       else {
         Logger.error("No se pudo obtener el producto | MongoDB");
         throw new ApiError("El producto no existe", ErrorStatus.NotFound);
       }
     }
 
-    products = await this._productos.find();
-    if (products) return [product];
+    arrayOffProducts = await this._products.find();
+    if (arrayOffProducts) return [arrayOffProducts];
     else {
       Logger.error("No se pudo traer el listado de PRODUCTOS | MongoDB");
       throw new ApiError(
@@ -63,10 +61,10 @@ export default class ProductsMongoDAO {
   }
 
   async post(data) {
-    const newProduct = await this._productos.create(data);
+    const newProduct = await this._products.create(data);
     if (newProduct) return [newProduct];
     else {
-      Logger.error("NO se pudo crear la MARCA | MongoDB");
+      Logger.error("NO se pudo crear el Producto | MongoDB");
       throw new ApiError(
         "ERROR al crear la el PRODUCTO | MongoDB",
         ErrorStatus.BadRequest
@@ -75,7 +73,7 @@ export default class ProductsMongoDAO {
   }
 
   async put(id, newData) {
-    const productToUpdate = await this._productos.findByIdAndUpdate(
+    const productToUpdate = await this._products.findByIdAndUpdate(
       id,
       newData,
       {
@@ -93,7 +91,7 @@ export default class ProductsMongoDAO {
   }
 
   async delete(id) {
-    const productToDelete = await this._productos.findByIdAndDelete(id);
+    const productToDelete = await this._products.findByIdAndDelete(id);
     if (productToDelete) return [productToDelete];
     else {
       Logger.error("NO se pudo borrar el PRODUCTO | MongoDB");

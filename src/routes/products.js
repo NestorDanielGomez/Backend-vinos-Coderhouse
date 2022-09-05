@@ -10,8 +10,8 @@ export default class ProductsRouter {
     const router = express.Router();
 
     router.get("/:id?", this.Controller.getProducts);
-    router.post("/", this.Controller.postProducts);
-    router.put("/:id", this.Controller.putProducts);
+    router.post("/", this.Controller.postProduct);
+    router.put("/:id", this.Controller.putProduct);
     router.delete("/:id", this.Controller.deleteProduct);
 
     return router;

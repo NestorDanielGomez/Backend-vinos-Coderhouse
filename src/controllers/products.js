@@ -5,11 +5,12 @@ export default class ProductsController {
   constructor() {
     this.ApiProducts = ApiProduct;
   }
+
   getProducts = async (req, res) => {
     try {
       const { id } = req.params;
       const products = await this.ApiProducts.getProducts(id);
-
+      console.log(products);
       res.status(200).json({
         data: products,
       });
@@ -21,8 +22,9 @@ export default class ProductsController {
       });
     }
   };
-  postProducts = async (req, res) => {
+  postProduct = async (req, res) => {
     try {
+      console.log(req.body);
       const newProduct = req.body;
       const productPosted = await this.ApiProducts.postProducts(newProduct);
 
@@ -39,7 +41,7 @@ export default class ProductsController {
     }
   };
 
-  putProducts = async (req, res) => {
+  putProduct = async (req, res) => {
     try {
       const { id } = req.params;
       const newData = req.body;

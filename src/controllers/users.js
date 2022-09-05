@@ -11,7 +11,7 @@ export default class UserController {
     try {
       const { id } = req.params;
       const users = await this.ApiUsers.getUser(id);
-
+      console.log(users);
       res.status(200).json({
         data: users,
       });
