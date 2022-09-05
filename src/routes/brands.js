@@ -1,5 +1,5 @@
 import express from "express";
-import BrandsController from "../controllers/brands";
+import { BrandsController } from "../controllers/brands";
 
 export default class BrandsRouter {
   constructor() {

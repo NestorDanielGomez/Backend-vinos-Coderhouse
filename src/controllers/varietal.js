@@ -5,7 +5,7 @@ export default class varietalsController {
   constructor() {
     this.ApiVarietals = new ApiVarietals();
   }
-  getvarietal = async (req, res) => {
+  getVarietal = async (req, res) => {
     try {
       const { id } = req.params;
       const varietal = await this.ApiVarietals.getVarietal(id);
@@ -21,7 +21,7 @@ export default class varietalsController {
       });
     }
   };
-  postvarietal = async (req, res) => {
+  postVarietal = async (req, res) => {
     try {
       const newvarietal = req.body;
       const varietalCreated = await this.ApiVarietals.postVarietal(newvarietal);
@@ -40,7 +40,7 @@ export default class varietalsController {
   };
   433218;
 
-  putvarietal = async (req, res) => {
+  putVarietal = async (req, res) => {
     try {
       const { id } = req.params;
       const newData = req.body;
@@ -59,7 +59,7 @@ export default class varietalsController {
     }
   };
 
-  deletevarietal = async (req, res) => {
+  deleteVarietal = async (req, res) => {
     try {
       const { id } = req.params;
       await this.ApiVarietals.deleteVarietal(id);

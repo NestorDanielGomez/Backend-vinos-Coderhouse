@@ -40,7 +40,6 @@ export default class CartsController {
 
   addProducts = async (req, res) => {
     try {
-      //const { user } = req;
       const user = req.params;
       const { productId, amount } = req.body;
 

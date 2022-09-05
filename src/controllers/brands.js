@@ -5,7 +5,7 @@ export default class BrandsController {
   constructor() {
     this.ApiBrands = new ApiBrands();
   }
-  getbrand = async (req, res) => {
+  getBrand = async (req, res) => {
     try {
       const { id } = req.params;
       const brand = await this.ApiBrands.getBrands(id);
@@ -21,7 +21,7 @@ export default class BrandsController {
       });
     }
   };
-  postbrand = async (req, res) => {
+  postBrand = async (req, res) => {
     try {
       const newbrand = req.body;
       const brandCreated = await this.ApiBrands.postBrand(newbrand);
@@ -40,7 +40,7 @@ export default class BrandsController {
   };
   433218;
 
-  putbrand = async (req, res) => {
+  putBrand = async (req, res) => {
     try {
       const { id } = req.params;
       const newData = req.body;
@@ -59,7 +59,7 @@ export default class BrandsController {
     }
   };
 
-  deletebrand = async (req, res) => {
+  deleteBrand = async (req, res) => {
     try {
       const { id } = req.params;
       await this.ApiBrands.deleteBrand(id);
