@@ -15,6 +15,7 @@ export default class UserController {
       res.status(200).json({
         data: users,
       });
+      res.render("login");
     } catch (error) {
       Logger.error("Error al intentar acceder al usuario | Controller");
       res.status(400).json({
@@ -65,7 +66,7 @@ export default class UserController {
   loginUser = async (req, res) => {
     const { email, password } = req.body;
     Logger.info("Buscando usuario...");
-
+    res.render("login");
     const user = await this.ApiUsers.getUserByEmailUser(email);
 
     if (!user || !user.isValidPassword(password))

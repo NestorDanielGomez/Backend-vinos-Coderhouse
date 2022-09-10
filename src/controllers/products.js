@@ -10,12 +10,13 @@ export default class ProductsController {
     try {
       const { id } = req.params;
       const products = await this.ApiProducts.getProducts(id);
-      console.log(products);
+
       res.status(200).json({
         data: products,
       });
     } catch (error) {
       Logger.error("Error al intentar acceder al producto | Controller");
+
       res.status(400).json({
         msg: "Error al intentar acceder al producto | Controller",
         error: error,
