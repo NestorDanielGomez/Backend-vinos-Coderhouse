@@ -36,7 +36,14 @@ app.use((req, res) => {
     msg: "Ruta no encontrada",
   });
 });
+//--------------
 
+const swaggerPath = path.resolve(process.cwd(), "./swagger.yml");
+const swaggerDoc = YAML.load(swaggerPath);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+
+//--------------
 const errorHandler = (err, req, res, next) => {
   Logger.error(err.stack);
   const status = err.statusCode || 500;
