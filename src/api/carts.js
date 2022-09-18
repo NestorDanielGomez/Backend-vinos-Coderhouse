@@ -1,5 +1,5 @@
-import Logger from "../services/logger";
 import Config from "../config";
+import Logger from "../services/logger";
 import CartsFactoryDAO from "../models/cart/DAOS/factory";
 
 export default class ApiCart {

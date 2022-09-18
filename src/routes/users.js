@@ -13,6 +13,7 @@ export default class UsersRouter {
     router.get("/:email?", this.Controller.getUserByEmail);
     router.post("/login", this.Controller.loginUser);
     router.post("/signup", this.Controller.signupUser);
+    router.post('/auth', this.Controller.getJwtUser)
     router.put("/:id", this.Controller.putUser);
     router.delete("/:id", this.Controller.deleteUser);
 

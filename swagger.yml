@@ -1,81 +1,984 @@
-
 openapi: 3.0.0
 info:
-  title: Titulo de nuestro proyecto Backend
-  description: Esta API es un ejemplo de la clase 43 de Coderhouse donde vamos a ver como se documenta con swagger
+  title: Nestor Gomez - Backend
+  description: Proyecto Backend - Curso Backend - Carrera Full Stack - Profesor Cristian Cinetto
   version: 1.0.0
 servers:
-  - url: http://localhost:8080/api
-    description: Local server
-  - url: https://mi-url-de-heroku.com/api
-    description: Production server
+  - url: http://localhost:5000/api
+    description: Servidor LOCAL
+  
+tags:
 
-components:
-  schemas:
-    Product:
-      type: object
-      required:
-        - id
-        - nombre
-        - precio
-        - stock
-      properties:
-        id:
-          type: string
-          description: identificador unico de cada producto
-        nombre:
-          type: string
-          description: nombre del producto
-        precio:
-          type: number
-          description: precio del producto en pesos argentinos
-        stock:
-          type: number
-          description: unidades en stock del producto
-      example:
-        id: 62df43581af04e56b1682fe4
-        nombre: desktop computer
-        precio: 123.78
-        stock: 25
+  - name: CATEGORIES
+  - name: BRANDS
+  - name: VARIETALS
+  - name: PRODUCTS
+  - name: USERS
+  - name: CARTS
+  - name: ORDERS
 
 paths:
-  /products:
+  
+  /categories:
     get:
-      summary: Gets every product available
       tags:
-        - Productos
-      responses:
-        '200':
-          description: Every product available.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Product'
-  /products/{productId}:
-    get:
-      summary: Returns a user by ID.
-      tags:
-        - Productos
-      parameters:
-        - name: productId
-          in: path
-          required: true
-          description: ID Del producto que queremos.
-          schema:
-            type : string
+        - CATEGORIES
+      summary: GET con todas las categorias
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
-Footer
-© 2022 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-Status
+                type: array
+              example:
+                data: array de objectos con todas las categorias
+                 
+    post:
+      tags:
+        - CATEGORIES
+      summary: (Post) Crear una categoria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Whiskys
+                description: Bebidas destiladas
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Categoria creada con exito
+                data:
+                  name: Destilados
+                  description: Categoria de Destilados
+                  _id: 6316566585b074e38203a9fc
+                  createdAt: '2022-09-05T20:04:53.645Z'
+                  updatedAt: '2022-09-05T20:04:53.645Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: "Error al crear la CATEGORIA | Controller:"
+                error: "Error: Invalid Schema\n    at Function.validate (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\src\\models\\categories\/index.js:18:22)\n    at ApiCategories._callee2$ (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\src\\api\/categories.js:17:22)\n    at tryCatch (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\regeneratorRuntime.js:86:17)\n    at Generator._invoke (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\regeneratorRuntime.js:66:24)\n    at Generator.next (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\regeneratorRuntime.js:117:21)\n    at asyncGeneratorStep (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\asyncToGenerator.js:3:24)\n    at _next (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\asyncToGenerator.js:25:9)\n    at D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\asyncToGenerator.js:32:7\n    at new Promise (<anonymous>)\n    at ApiCategories.<anonymous> (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\asyncToGenerator.js:21:12)"
+  /categories/{categoryId}:
+    get:
+      tags:
+        - CATEGORIES
+      summary: Buscar categoria por ID
+      parameters:
+        - name: categoryId
+          in: path
+          description: Toma el Id de una categoria existente
+          required: true
+          example: 6316565c85b074e38203a9fa
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  _id: 6316565c85b074e38203a9fa
+                  name: Espumantes
+                  description: Categoria de Champagnes
+                  createdAt: '2022-09-05T20:04:44.153Z'
+                  updatedAt: '2022-09-05T20:04:44.153Z'
+    put:
+      tags:
+        - CATEGORIES
+      summary: Editar una categoria existente.
+      parameters:
+        - name: categoryId
+          in: path
+          description: Toma el Id de una categoria existente
+          required: true
+          example: 6316565c85b074e38203a9fa
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Espumantes
+                description: Categoria de Champagnes
+      responses:
+        '201':
+          description: Created
+        
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Categoria actualizada con exito
+                data:
+                  _id: 6316565c85b074e38203a9fa
+                  name: Espumantes
+                  description: Categoria de Champagnes
+                  createdAt: '2022-09-05T20:04:44.153Z'
+                  updatedAt: '2022-09-05T20:04:44.153Z'
+    delete:
+      tags:
+        - CATEGORIES
+      summary: Borrar una categoria
+      parameters:
+        - name: categoryId
+          in: path
+          description: Toma el Id de una categoria existente
+          required: true
+          example: 632716f03037e094ccf3097f
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Categoria Borrada con Exito
+    
+  
+  /brands:
+    get:
+      tags:
+        - BRANDS
+      summary: GET con todas las marcas de productos
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                data: array de objetos con todas las marcas de productos
+                  
+    post:
+      tags:
+        - BRANDS
+      summary: (Post) Crear una nueva Marca
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Luigi Bosca
+                description: Vino premiun
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Marca creada con exito
+                data:
+                  name: Finca las moras
+                  description: Marca de Vino
+                  _id: 6316569b85b074e38203aa00
+                  createdAt: '2022-09-05T20:05:47.512Z'
+                  updatedAt: '2022-09-05T20:05:47.512Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: "Error al crear la Marca | Controller:"
+                error: "Error: Esquema no valido:\n    at Function.validate (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\src\\models\\brands\/index.js:18:22)\n    at ApiBrands._callee2$ (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\src\\api\/brands.js:17:18)\n    at tryCatch (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\regeneratorRuntime.js:86:17)\n    at Generator._invoke (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\regeneratorRuntime.js:66:24)\n    at Generator.next (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\regeneratorRuntime.js:117:21)\n    at asyncGeneratorStep (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\asyncToGenerator.js:3:24)\n    at _next (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\asyncToGenerator.js:25:9)\n    at D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\asyncToGenerator.js:32:7\n    at new Promise (<anonymous>)\n    at ApiBrands.<anonymous> (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\asyncToGenerator.js:21:12)"
+  /brands/{brandId}:
+    get:
+      tags:
+        - BRANDS
+      summary: Buscar Marca por ID
+      parameters:
+        - name: brandId
+          in: path
+          description: Toma el Id de una marca existente
+          required: true
+          example: 6316565c85b074e38203a9fa
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  _id: 6316569385b074e38203a9fe
+                  name: Trumpeter
+                  description: Marca de Vino
+                  createdAt: '2022-09-05T20:05:39.065Z'
+                  updatedAt: '2022-09-05T20:05:39.065Z'
+    put:
+      tags:
+        - BRANDS
+      summary: Editar una marca existente.
+      parameters:
+        - name: categoryId
+          in: path
+          description: Toma el Id de una marca existente
+          required: true
+          example: 6316569b85b074e38203aa00
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Trumpeter
+                description: Marca de Vino
+      responses:
+        '201':
+          description: Created
+        
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Marca actualizada con exito
+                data:
+                  _id: 6316569b85b074e38203aa00
+                  name: Finca las moras
+                  description: Marca de Vino
+                  createdAt: '2022-09-05T20:05:47.512Z'
+                  updatedAt: '2022-09-05T20:05:47.512Z'
+    delete:
+      tags:
+        - BRANDS
+      summary: Borrar una MARCA
+      parameters:
+        - name: categoryId
+          in: path
+          description: Toma el Id de una MARCA existente
+          required: true
+          example: 632725400effb2b73ffc91f9
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Categoria Borrada con Exito
+  
+  
+  /varietals:
+    get:
+      tags:
+        - VARIETALS
+      summary: GET con todos las VARIETALES de productos
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                data: array de objetos con todas los varietales de productos
+                  
+    post:
+      tags:
+        - VARIETALS
+      summary: (Post) Crear un nuevo Varietal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Malbec
+                description: Variante Vino Tinto
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Marca creada con exito
+                data:
+                  name: Finca las moras
+                  description: Marca de Vino
+                  _id: 6316569b85b074e38203aa00
+                  createdAt: '2022-09-05T20:05:47.512Z'
+                  updatedAt: '2022-09-05T20:05:47.512Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: "Error al crear la Marca | Controller:"
+                error: "Error: Esquema no valido\n    at Function.validate (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\src\\models\\varietals\/index.js:18:22)\n    at ApiVarietals._callee2$ (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\src\\api\/varietals.js:17:21)\n    at tryCatch (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\regeneratorRuntime.js:86:17)\n    at Generator._invoke (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\regeneratorRuntime.js:66:24)\n    at Generator.next (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\regeneratorRuntime.js:117:21)\n    at asyncGeneratorStep (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\asyncToGenerator.js:3:24)\n    at _next (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\asyncToGenerator.js:25:9)\n    at D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\asyncToGenerator.js:32:7\n    at new Promise (<anonymous>)\n    at ApiVarietals.<anonymous> (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\asyncToGenerator.js:21:12)"
+  /varietals/{varietalId}:
+    get:
+      tags:
+        - VARIETALS
+      summary: Buscar Varietal por ID
+      parameters:
+        - name: varietaldId
+          in: path
+          description: Toma el Id de un VARIETAL existente
+          required: true
+          example: 6316561885b074e38203a9f3
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  _id: 6316561885b074e38203a9f3
+                  name: Trumpeter
+                  description: Marca de Vino
+                  createdAt: '2022-09-05T20:05:39.065Z'
+                  updatedAt: '2022-09-05T20:05:39.065Z'
+    put:
+      tags:
+        - VARIETALS
+      summary: Editar una marca existente.
+      parameters:
+        - name: categoryId
+          in: path
+          description: Toma el Id de un VARIETAL existente
+          required: true
+          example: 6316569b85b074e38203aa00
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Malbec
+                description: Variante Vino Tinto
+      responses:
+        '201':
+          description: Created
+        
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Marca actualizada con exito
+                data:
+                  _id: 6316561885b074e38203a9f3
+                  name: Malbec
+                  description: Variante Vino Tinto
+                  createdAt: '2022-09-05T20:03:36.697Z'
+                  updatedAt: '2022-09-05T20:03:36.697Z'
+    delete:
+      tags:
+        - VARIETALS
+      summary: Borrar un Varietal
+      parameters:
+        - name: varietalId
+          in: path
+          description: Toma el Id de un VARIETAL existente
+          required: true
+          example: 6316561885b074e38203a9f3
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Varietal Borrado con Exito
+  
+   
+  /products:
+    get:
+      tags:
+        - PRODUCTS
+      summary: Trae todos los productos
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+                data: array de objetos con todos los productos
+    post:
+      tags:
+        - PRODUCTS
+      summary: Crear un nuevo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Champagne
+                description: Botella 750ml
+                category: 6316565c85b074e38203a9fa (id de una categoria existente)
+                brand: 6316569b85b074e38203aa00 (id de una marca existente)
+                varietal: 6316569b85b074e38203aa00 (id de un varietal existente)
+                img: ./images/vinos/champagne-mariacodorniu-extrabrut.jpg (carpeta images dentro de la carpeta public)
+                price: 2250
+                stock: 50
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Producto creado con exito
+                data:
+                  - _id: 63166b8c4ce632ba787051d5
+                    name: Champagne
+                    description: Botella 750ml
+                    category: 6316565c85b074e38203a9fa (id de una categoria existente)
+                    brand: 6316569b85b074e38203aa00 (id de una marca existente)
+                    varietal: 6316569b85b074e38203aa00 (id de un varietal existente)
+                    img: ./images/vinos/champagne-mariacodorniu-extrabrut.jpg (carpeta images dentro de la carpeta public)
+                    price: 2250
+                    stock: 50
+                    createdAt: '2022-09-05T21:35:08.293Z'
+                    updatedAt: '2022-09-05T21:35:08.293Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Error al crear el producto
+                error:
+                  statusCode: 400
+  /products/{productId}:
+    get:
+        tags:
+          - PRODUCTS
+        summary: Trae um producto con un ID especifico
+        parameters:
+        - name: productId
+          in: path
+          description: path parameter takes the product id
+          required: true
+          example: 631e027278e5541cf40657a8
+          schema:
+            type: string
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  type: object
+                example:
+                  data:
+                    _id: 63166b8c4ce632ba787051d5
+                    name: Champagne
+                    description: Botella 750ml
+                    category: 6316565c85b074e38203a9fa (id de una categoria existente)
+                    brand: 6316569b85b074e38203aa00 (id de una marca existente)
+                    varietal: 6316569b85b074e38203aa00 (id de un varietal existente)
+                    img: ./images/vinos/champagne-mariacodorniu-extrabrut.jpg (carpeta images dentro de la carpeta public)
+                    price: 2250
+                    stock: 50
+                    createdAt: '2022-09-05T21:35:08.293Z'
+                    updatedAt: '2022-09-05T21:35:08.293Z'
+          '400':
+            description: Bad Request
+            content:
+              application/json:
+                schema:
+                  type: object
+                example:
+                  msg: Error al intentar acceder al producto | Controller
+                  error: Cast to ObjectId failed for value \"63166b8c4ce632ba7870222\" (type string) at path \"_id\" for model \"products\"\n    at model.Query.exec (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\query.js:4884:21)\n    at model.Query.Query.then (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\query.js:4983:15)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+  
+    put:
+        tags:
+          - PRODUCTS
+        summary: Editar un producto
+        parameters:
+        - name: productId
+          in: path
+          description: Usar el Id de un producto existente
+          required: true
+          example: 63166b8c4ce632ba787051d5
+          schema:
+            type: string
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                   name: Champagne
+                   description: Botella 750ml
+                   category: 6316565c85b074e38203a9fa,
+                   brand: 6316569b85b074e38203aa00
+                   varietal: 6316562985b074e38203a9f5
+                   img: ./images/vinos/champagne-mariacodorniu-extrabrut.jpg
+                   price: 2250,
+                   stock: 50,
+        responses:
+          '201':
+            description: Created
+            content:
+              application/json:
+                schema:
+                  type: object
+                example:
+                  msg: Producto Creado con exito
+                  data:
+                    _id: 63166b8c4ce632ba787051d5
+                    name: Champagne
+                    description: Botella 750ml
+                    category: 6316565c85b074e38203a9fa (id de una categoria existente)
+                    brand: 6316569b85b074e38203aa00 (id de una marca existente)
+                    varietal: 6316569b85b074e38203aa00 (id de un varietal existente)
+                    img: ./images/vinos/champagne-mariacodorniu-extrabrut.jpg (carpeta images dentro de la carpeta public)
+                    price: 2250
+                    stock: 50
+                    createdAt: '2022-09-05T21:35:08.293Z'
+                    updatedAt: '2022-09-05T21:35:08.293Z'
+    delete:
+        tags:
+          - PRODUCTS
+        summary: Borrar un producto con el Id de un producto existente
+        parameters:
+        - name: productId
+          in: path
+          description: Usar el Id de un producto existente
+          required: true
+          example: 63166b8c4ce632ba787051d5
+          schema:
+            type: string
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  type: object
+                example:
+                  msg: Producto borrado con exito
+          '400':
+            description: Bad Request
+            content:
+              application/json:
+                schema:
+                  type: object
+                example:
+                  msg: Error al borrar un producto en la db | Controller
+                  error: Cast to ObjectId failed for value \"63166b8c4ce632ba7870111\" (type string) at path \"_id\" for model \"products\"\n    at model.Query.exec (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\query.js:4884:21)\n    at model.Query.Query.then (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\query.js:4983:15)\n    at runMicrotasks (<anonymous>)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+  
+    
+  /users:
+    get:
+      tags:
+        - USERS
+      summary: Trae todos los ususarios
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+              example: 
+                users:
+                  - _id: 632775641c61e6d587ab971a
+                    name: Leticia
+                    lastName: Zanel
+                    number: 3482318980
+                    email: leticiazanel@correo.com
+                    password: $2b$10$f1PqcCv3n.fKkuP2oavMS.xeWb2YKfRDG7Jsz/83NTHT53uPFaiL2
+                    admin: false
+                    createdAt: '2022-07-21T02:39:06.287Z'
+                    updatedAt: '2022-07-21T02:39:06.287Z'
+               
+                  - _id: 62d8bc4a9b445725d8f6262a
+                    email: leticiazanel@correo.com
+                    password: $2b$10$f1PqcCv3n.fKkuP2oavMS.xeWb2YKfRDG7Jsz/83NTHT53uPFaiL2
+                    name: Leticia
+                    lastName: Zanel
+                    age: 39
+                    admin: false
+                    address: 
+                        - street: Belgrano 2371
+                          city: Reconquista
+                    createdAt: '2022-07-21T02:39:06.287Z'
+                    updatedAt: '2022-07-21T02:39:06.287Z'
+  /users/signup:
+    post:
+      tags:
+        - USERS
+      summary: Crear Usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Bautista
+                lastname: Gomez
+                phone: 348231890
+                email: bautista@correo.com
+                password: 'bautista'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Usuario creado con exito
+                userCreated:
+                  _id: 632775641c61e6d587ab971a
+                  name: Leticia
+                  lastname: Zanel
+                  phone: 348231890
+                  email: leticia@correo.com
+                  password: $2b$10$Juj1zAuVxVaPKxYpvYQQJOolTR9wsoLznntmX7YXBGTGzuXK9H.86
+                  admin: true
+                  createdAt: '2022-09-18T19:45:40.264Z'
+                  updatedAt: '2022-09-18T19:45:40.264Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Error al intentar crear el usuario | Controller
+                error: Path `lastname` is required.\n    at model.Document.invalidate (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\document.js:3054:32)\n    at D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\document.js:2842:17\n    at D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\schematype.js:1349:9\n    at processTicksAndRejections (node:internal/process/task_queues:78:11)
+  /users/login:
+    post:
+      tags:
+        - USERS
+      summary: Login de un usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: leticia@correo.co
+                password: 'leticia'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: login OK
+                token: >-
+                  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzI3NzU2NDFjNjFlNmQ1ODdhYjk3MWEiLCJsYXN0bmFtZSI6IlphbmVsIiwiYWRtaW4iOnRydWUsImlhdCI6MTY2MzUzMzY4NywiZXhwIjoxNjYzNTM3Mjg3fQ.KWcHf7U_k1TZzE6osEOz8aua340HYPLZNcvq1HjKyHk
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Error buscando al ususario en la db | Controller
+                error: Error al intentar leer el usuario | DAO:\n    at _callee4$ (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\src\\models\\users\\DAOS\/mongo.js:67:15)\n    at tryCatch (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\regeneratorRuntime.js:86:17)\n    at Generator._invoke (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\regeneratorRuntime.js:66:24)\n    at Generator.next (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\regeneratorRuntime.js:117:21)\n    at asyncGeneratorStep (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\asyncToGenerator.js:3:24)\n    at _next (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\@babel\\runtime\\helpers\\asyncToGenerator.js:25:9)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+  /users/{userId}:
+    get:
+      tags:
+        - USERS
+      summary: Buscar usuario por id
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          example: 632775641c61e6d587ab971a
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                users:
+                  _id: 632775641c61e6d587ab971a
+                  name: Leticia
+                  lastname: Zanel
+                  phone: 348231890
+                  email: leticia@correo.com
+                  password: $2b$10$Juj1zAuVxVaPKxYpvYQQJOolTR9wsoLznntmX7YXBGTGzuXK9H.86
+                  admin: false
+                  createdAt: '2022-09-18T19:45:40.264Z'
+                  updatedAt: '2022-09-18T19:45:40.264Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Error al intentar acceder al usuario | Controller
+                error: Cast to ObjectId failed for value \"632775641c61e6d587ab222\" (type string) at path \"_id\" for model \"users\"\n    at model.Query.exec (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\query.js:4884:21)\n    at model.Query.Query.then (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\query.js:4983:15)\n    at runMicrotasks (<anonymous>)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5
+    put:
+      tags:
+        - USERS
+      summary: Editar usuario por ID
+      parameters:
+        - name: userId
+          in: path
+          description: path parameter takes the user id
+          required: true
+          example: 631388acd9b6a07d248330d6
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Leticia editado
+                lastname: Zanel editado
+                phone: 348231890
+                email: leticia@correo.com
+                password: password
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Usuario actualizado con exito
+                data:
+                  _id: 632775641c61e6d587ab971a
+                  name: Leticia
+                  lastname: Zanel
+                  phone: 348231890
+                  email: leticia@correo.com
+                  password: $2b$10$Juj1zAuVxVaPKxYpvYQQJOolTR9wsoLznntmX7YXBGTGzuXK9H.86
+                  admin: false
+                  createdAt: '2022-09-18T19:45:40.264Z'
+                  updatedAt: '2022-09-18T19:45:40.264Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Error al intentar actualizar el usuario | Controller
+                CastError: Cast to ObjectId failed for value \"223\" (type string) at path \"_id\" for model \"users\"\n    at model.Query.exec (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\query.js:4884:21)\n    at model.Query.Query.then (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\query.js:4983:15)\n    at runMicrotasks (<anonymous>)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+                  
+    delete:
+      tags:
+        - USERS
+      summary: Borrar un usuario por ID
+      parameters:
+        - name: userId
+          in: path
+
+          required: true
+          example: 632775641c61e6d587ab971a
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Usuario borrado con exito
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Error borrando ususario de la db | controller
+                error: Cast to ObjectId failed for value \"632775641c61e6d587ab222\" (type string) at path \"userId\" for model \"carts\
+                  
+  
+
+
+
+  /cart/{userId}:
+    get:
+      tags:
+        - CARTS
+      summary: Obtener Carro segun el id del ususario
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          example: 6327758c1c61e6d587ab971e
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  _id: 6327758d1c61e6d587ab9720
+                  userId: 6327758c1c61e6d587ab971e
+                  products: []
+                  createdAt: '2022-09-18T19:46:21.236Z'
+                  updatedAt: '2022-09-18T19:46:21.236Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Error Obteniendo el carro
+                error:
+                  valueType: string
+                  kind: ObjectId
+                  value: 631eb65c585b7f4284
+                  path: userId
+                  reason: {}
+                  name: CastError
+                  message: No se pudo acceder al carrito
+                  error: Cast to ObjectId failed for value \"6327758c1c61e6d587ab971\" (type string) at path \"userId\" for model \"carts\"\n    at model.Query.exec (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\query.js:4884:21)\n    at model.Query.Query.then (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\query.js:4983:15)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    post:
+      tags:
+        - CARTS
+      summary: Agregar un producto al carrito, usando el id del producto
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          example: 6327758c1c61e6d587ab971e
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                productId: 6327758c1c61e6d587ab971e
+                amount: 2
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Producto agregado con exito
+                cart:
+                  _id: 6327758d1c61e6d587ab9720
+                  userId: 6327758c1c61e6d587ab971e
+                  products:
+                    - productId: 63166b8c4ce632ba787051d5
+                      items: 2
+                  createdAt: '2022-09-18T19:46:21.236Z'
+                  updatedAt: '2022-09-18T19:46:21.236Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: API ERROR occurred when trying to add the product to the Cart
+                error:
+                  stringValue: '"631eb65c585b7f428469"'
+                  valueType: string
+                  kind: ObjectId
+                  value: 631eb65c585b7f428469
+                  path: userId
+                  reason: {}
+                  name: CastError
+                  message: ERROR al tratar de agregar un producto al carrito
+                  error: ast to ObjectId failed for value \"63166b8c4ce632ba78515\" (type string) at path \"_id\" for model \"products\"\n    at model.Query.exec (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\query.js:4884:21)\n    at model.Query.Query.then (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\query.js:4983:15)\n    at runMicrotasks (<anonymous>)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    delete:
+      tags:
+        - CARTS
+      summary: Eliminar producto del carrito con el id del producto
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Producto Borrado con exito
+                cart:
+                  _id: 6327758d1c61e6d587ab9720
+                  userId: 6327758c1c61e6d587ab971e
+                  products:
+                    - productId: 63166b8c4ce632ba787051d5
+                      items: 2
+                  createdAt: '2022-09-18T19:46:21.236Z'
+                  updatedAt: '2022-09-18T19:46:21.236Z'
+        '400':
+          description: Bad Request
+       
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Error al eliminar el producto del carrito
+                error: error

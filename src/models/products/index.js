@@ -12,7 +12,7 @@ export default class Products {
     this.img = img;
   }
 
-  static validate(product, requerido) {
+  static validate(product, requerido=true) {
     const schema = Joi.object({
       name: requerido ? Joi.string().required() : Joi.string(),
       description: requerido ? Joi.string().required() : Joi.string(),
@@ -26,6 +26,6 @@ export default class Products {
 
     const { error } = schema.validate(product);
 
-    if (error) throw new ApiError("Esquema no valido", ErrorStatus.BadRequest);
+    if (error) throw new ApiError(`Esquema no valido. ${error}` , ErrorStatus.BadRequest);
   }
 }

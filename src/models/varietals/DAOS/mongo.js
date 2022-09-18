@@ -17,11 +17,10 @@ export default class VarietalsMongoDAO {
   }
 
   async get(id) {
-    varietalToUpdate;
-    let arrayOffvarietals = [];
+      let arrayOffvarietals = [];
     if (id) {
       const varietal = await this._varietals.findById(id);
-      if (varietal) return [varietal];
+      if (varietal) return varietal;
       else {
         Logger.error("No se pudo obtener la VARIETAL | MongoDB");
         throw new ApiError(
@@ -32,7 +31,7 @@ export default class VarietalsMongoDAO {
     }
 
     arrayOffvarietals = await this._varietals.find();
-    if (arrayOffvarietals) return [arrayOffvarietals];
+    if (arrayOffvarietals) return arrayOffvarietals;
     else {
       Logger.error("No se pudo traer el listado de VARIETALES | MongoDB");
       throw new ApiError(
@@ -44,7 +43,7 @@ export default class VarietalsMongoDAO {
 
   async post(data) {
     const newVarietal = await this._varietals.create(data);
-    if (newVarietal) return [newVarietal];
+    if (newVarietal) return newVarietal;
     else {
       Logger.error("NO se pudo crear la VARIETAL | MongoDB");
       throw new ApiError(
@@ -62,7 +61,7 @@ export default class VarietalsMongoDAO {
         new: true,
       }
     );
-    if (varietalToUpdate) return [varietalToUpdate];
+    if (varietalToUpdate) return varietalToUpdate;
     else {
       Logger.error("NO se pudo actualizar la VARIETAL | MongoDB");
       throw new ApiError(
@@ -74,7 +73,7 @@ export default class VarietalsMongoDAO {
 
   async delete(id) {
     const varietalToDelete = await this._varietals.findByIdAndDelete(id);
-    if (varietalToDelete) return [varietalToDelete];
+    if (varietalToDelete) return varietalToDelete;
     else {
       Logger.error("NO se pudo borrar la VARIETAL | MongoDB");
       throw new ApiError(

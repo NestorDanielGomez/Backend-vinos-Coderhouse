@@ -8,7 +8,7 @@ export default class Users {
     this.phone = phone;
     this.email = email;
     this.password = password;
-
+    this.admin = admin;
     }
 
     static validate(user, requerido) {
@@ -18,11 +18,11 @@ export default class Users {
             phone: requerido? Joi.number().required() :  Joi.number(),
 			email: requerido? Joi.string().required() :  Joi.string(),
             password: requerido? Joi.string().required() :  Joi.string(),
-            admin: Joi.boolean()
+            admin: requerido? Joi.boolean().required() :  Joi.boolean()
 		});
 
     const { error } = schema.validate(user);
 
-    if (error) throw new ApiError('Invalid Schema', ErrorStatus.BadRequest);
+    if (error) throw new ApiError(`Esquema no valido ${error}` , ErrorStatus.BadRequest);
     }
 }

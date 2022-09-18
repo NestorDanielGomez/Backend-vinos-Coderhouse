@@ -1,14 +1,14 @@
 import { ApiVarietal } from "../api/varietals";
 import Logger from "../services/logger";
 
-export default class varietalsController {
+export default class VarietalsController {
   constructor() {
     this.ApiVarietals = ApiVarietal;
   }
   getVarietal = async (req, res) => {
     try {
       const { id } = req.params;
-      const varietal = await this.ApiVarietals.getVarietal(id);
+      const varietal = await this.ApiVarietals.getVarietals(id);
 
       res.status(200).json({
         data: varietal,
@@ -17,7 +17,7 @@ export default class varietalsController {
       Logger.error("Error al intentar acceder a la Varietal | Controller");
       res.status(400).json({
         msg: "Error al intentar acceder a la Varietal | Controller:",
-        error: error,
+        error: error.stack,
       });
     }
   };
@@ -34,7 +34,7 @@ export default class varietalsController {
       Logger.error("Error al crear la Varietal | Controller");
       res.status(400).json({
         msg: "Error al crear la Varietal | Controller:",
-        error: error,
+        error: error.stack,
       });
     }
   };
@@ -54,7 +54,7 @@ export default class varietalsController {
       Logger.error("Error al actualizar la Varietal | Controller");
       res.status(400).json({
         msg: "Error al actualizar la Varietal | Controller:",
-        error: error,
+        error: error.stack,
       });
     }
   };
@@ -71,10 +71,10 @@ export default class varietalsController {
       Logger.error("Error al borrar Varietal | Controller");
       res.status(400).json({
         msg: "Error al borrar la Varietal | Controller:",
-        error: error,
+        error: error.stack,
       });
     }
   };
 }
 
-export const VarietalController = new varietalsController();
+export const VarietalController = new VarietalsController();

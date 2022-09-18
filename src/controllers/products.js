@@ -12,20 +12,19 @@ export default class ProductsController {
       const products = await this.ApiProducts.getProducts(id);
 
       res.status(200).json({
-        data: products,
+        data: products
       });
     } catch (error) {
       Logger.error("Error al intentar acceder al producto | Controller");
-
       res.status(400).json({
         msg: "Error al intentar acceder al producto | Controller",
-        error: error,
+        error: error.stack,
       });
+     
     }
   };
   postProduct = async (req, res) => {
     try {
-      console.log(req.body);
       const newProduct = req.body;
       const productPosted = await this.ApiProducts.postProducts(newProduct);
 
@@ -36,9 +35,10 @@ export default class ProductsController {
     } catch (error) {
       Logger.error("Error al crear un producto en la db | Controller");
       res.status(400).json({
-        msg: "Error al crear un producto en la db | Controller:",
-        error: error,
+        msg: "Error al crear un producto en la db | Controller",
+        error: error.stack,
       });
+      
     }
   };
 
@@ -56,7 +56,7 @@ export default class ProductsController {
       Logger.error("Error al actualizar un producto en la db | Controller");
       res.status(400).json({
         msg: "Error al actualizar un producto en la db | Controller",
-        error: error,
+        error: error.stack,
       });
     }
   };
@@ -73,7 +73,7 @@ export default class ProductsController {
       Logger.error("Error al borrar un producto en la db | Controller");
       res.status(400).json({
         msg: "Error al borrar un producto en la db | Controller:",
-        error: error,
+        error: error.stack,
       });
     }
   };

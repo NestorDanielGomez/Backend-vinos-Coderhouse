@@ -36,7 +36,7 @@ export default class CategoriesController {
       Logger.error("Error al crear la CATEGORIA | Controller");
       res.status(400).json({
         msg: "Error al crear la CATEGORIA | Controller:",
-        error: error,
+        error: error.stack,
       });
     }
   };

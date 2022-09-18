@@ -13,7 +13,7 @@ export default class ApiProducts {
   }
 
   async postProducts(newData) {
-    console.log("newdataloca", newData);
+   
     await Products.validate(newData, true);
     Logger.info("Creando PRODUCTO en la DB | API");
     return this.productsDAO.post(newData);

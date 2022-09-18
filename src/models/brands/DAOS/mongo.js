@@ -20,7 +20,7 @@ export default class BrandsMongoDAO {
     let arrayOffBrands = [];
     if (id) {
       const brand = await this._brands.findById(id);
-      if (brand) return [brand];
+      if (brand) return brand;
       else {
         Logger.error("No se pudo obtener la MARCA | MongoDB");
         throw new ApiError(
@@ -31,7 +31,7 @@ export default class BrandsMongoDAO {
     }
 
     arrayOffBrands = await this._brands.find();
-    if (arrayOffBrands) return [arrayOffBrands];
+    if (arrayOffBrands) return arrayOffBrands;
     else {
       Logger.error("No se pudo traer el listado de MARCAS | MongoDB");
       throw new ApiError(
@@ -43,7 +43,7 @@ export default class BrandsMongoDAO {
 
   async post(data) {
     const newBrand = await this._brands.create(data);
-    if (newBrand) return [newBrand];
+    if (newBrand) return newBrand;
     else {
       Logger.error("NO se pudo crear la MARCA | MongoDB");
       throw new ApiError(
@@ -57,7 +57,7 @@ export default class BrandsMongoDAO {
     const brandToUpdate = await this._brands.findByIdAndUpdate(id, newData, {
       new: true,
     });
-    if (brandToUpdate) return [brandToUpdate];
+    if (brandToUpdate) return brandToUpdate;
     else {
       Logger.error("NO se pudo actualizar la MARCA | MongoDB");
       throw new ApiError(
@@ -69,7 +69,7 @@ export default class BrandsMongoDAO {
 
   async delete(id) {
     const brandToDelete = await this._brands.findByIdAndDelete(id);
-    if (brandToDelete) return [brandToDelete];
+    if (brandToDelete) return brandToDelete;
     else {
       Logger.error("NO se pudo borrar la MARCA | MongoDB");
       throw new ApiError(

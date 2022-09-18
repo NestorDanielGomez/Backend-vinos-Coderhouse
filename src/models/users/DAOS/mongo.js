@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import Logger from "../../../services/logger";
+import { ApiError, ErrorStatus } from '../../../services/error'
 
 export const usersCollectionName = "users";
 
@@ -44,7 +45,7 @@ export default class UsersMongoDAO {
 
     if (id) {
       const document = await UserModel.findById(id);
-      if (document) return [document];
+      if (document) return document;
       else {
         Logger.error("Error al intentar acceder al usuario | DAO");
         throw new ApiError(
@@ -72,7 +73,16 @@ export default class UsersMongoDAO {
   }
 
   async post(data) {
-    const newUser = await UserModel.create(data);
+    const user = {
+      name: data.name,
+      lastname: data.lastname,
+      phone: data.phone,
+      email: data.email,
+      password: data.password,
+      admin: data.admin
+        }    
+
+    const newUser = await UserModel.create(user);
     if (newUser) return newUser;
     else {
       Logger.error("Error al intentar crear el usuario | DAO");

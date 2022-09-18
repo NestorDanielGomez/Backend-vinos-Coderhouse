@@ -9,11 +9,9 @@ export const cartCollectionName = "carts";
 export default class CartsMongoDAO {
   _cartSchema = new mongoose.Schema(
     {
-      userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: usersCollectionName,
-        required: true,
-      },
+      userId: { type: mongoose.Schema.Types.ObjectId,
+                ref: usersCollectionName,
+                required: true, },
       products: { type: Array, required: false, default: [] },
     },
     { timestamps: true, versionKey: false }
@@ -26,7 +24,11 @@ export default class CartsMongoDAO {
   }
 
   async createCart(userId) {
-    const newCart = await this._carts.create({ userId });
+    const newCart = {
+      userId,
+      products: []
+    }
+    await this._carts.create(newCart);
   }
 
   async get(userId) {

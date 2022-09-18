@@ -1,6 +1,9 @@
+import Config from "../config";
 import { ApiUser } from "../api/users";
 import Logger from "../services/logger";
 import { generateAuthToken, checkAuth } from "../services/auth";
+import { ApiCarts } from '../api/carts'
+import jwt from "jsonwebtoken";
 
 export default class UserController {
   constructor() {
@@ -11,16 +14,15 @@ export default class UserController {
     try {
       const { id } = req.params;
       const users = await this.ApiUsers.getUser(id);
-      console.log(users);
       res.status(200).json({
         data: users,
       });
-      res.render("login");
+
     } catch (error) {
       Logger.error("Error al intentar acceder al usuario | Controller");
       res.status(400).json({
         msg: "Error al intentar acceder al usuario | Controller:",
-        error: error,
+        error: error.stack,
       });
     }
   };
@@ -37,7 +39,7 @@ export default class UserController {
       Logger.error("Error al intentar leer el usuario | Controller");
       res.status(400).json({
         msg: "Error al intentar leer el usuario | Controller:",
-        error: error,
+        error: error.stack,
       });
     }
   };
@@ -45,8 +47,10 @@ export default class UserController {
   signupUser = async (req, res) => {
     try {
       const newUser = req.body;
-      Logger.info("Creating User...");
+      Logger.info("Creando nuevo usuario");
       const userCreated = await this.ApiUsers.postUser(newUser);
+      const userId = (userCreated._id).toString()
+      await ApiCarts.createCart(userId)
 
       res.status(201).json({
         msg: "Usuario creado con exito",
@@ -58,27 +62,60 @@ export default class UserController {
       Logger.error("Error al intentar crear el usuario | Controller");
       res.status(400).json({
         msg: "Error al intentar crear el usuario | Controller",
-        error: error,
+        error: error.stack,
       });
     }
   };
 
   loginUser = async (req, res) => {
-    const { email, password } = req.body;
-    Logger.info("Buscando usuario...");
-    res.render("login");
-    const user = await this.ApiUsers.getUserByEmailUser(email);
+    try {
+      const { email, password } = req.body;
+      Logger.info("Buscando usuario...");
+    
+      const user = await this.ApiUsers.getUserByEmailUser(email);
+  
+      if (!user || !user.isValidPassword(password))
+        return res.status(401).json({ msg: "Usuario o Contraseña incorrectos" });
+  
+      const token = generateAuthToken(user);
+  
+      res.header("x-auth-token", token).json({
+        msg: "LOGIN OK",
+        token,
+      });
+    } catch (error) {
+      Logger.error('Error buscando al ususario en la db | Controller')
+      res.status(400).json({
+          msg: 'Error buscando al ususario en la db | Controller',
+          error: error.stack
+      })
+    }
 
-    if (!user || !user.isValidPassword(password))
-      return res.status(401).json({ msg: "Usuario o Contraseña incorrectos" });
-
-    const token = generateAuthToken(user);
-
-    res.header("x-auth-token", token).json({
-      msg: "LOGIN OK",
-      token,
-    });
   };
+
+  getJwtUser = async ( req, res ) => {
+
+    const { token } = req.body
+    if (!token) return res.status(401).json({ msg: 'NO autorizado' });
+
+    try {
+        const decode = jwt.verify( token, Config.TOKEN_SECRET_KEY);
+        const user = await this.ApiUsers.getUser(decode.userId);
+    
+        if (!user) return res.status(400).json({ msg: 'NO autorizado' });
+    
+        res.status(200).json({
+            user
+        })
+  
+      } catch (error) {
+        return res.status(401).json({ msg: 'NO autorizado' ,
+      error: error.stack});
+      }
+}
+
+
+
 
   putUser = async (req, res) => {
     try {
@@ -94,7 +131,7 @@ export default class UserController {
       Logger.error("Error al intentar actualizar el usuario | Controller");
       res.status(400).json({
         msg: "Error al intentar actualizar el usuario | Controller:",
-        error: error,
+        error: error.stack,
       });
     }
   };
@@ -111,7 +148,7 @@ export default class UserController {
       Logger.error("Error al intentar borrar el usuario | Controller");
       res.status(400).json({
         msg: "Error al intentar borrar el usuario | Controller",
-        error: error,
+        error: error.message,
       });
     }
   };

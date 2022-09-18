@@ -17,7 +17,7 @@ export default class BrandsController {
       Logger.error("Error al intentar acceder a la Marca | Controller");
       res.status(400).json({
         msg: "Error al intentar acceder a la Marca | Controller:",
-        error: error,
+        error: error.stack,
       });
     }
   };
@@ -34,7 +34,7 @@ export default class BrandsController {
       Logger.error("Error al crear la Marca | Controller");
       res.status(400).json({
         msg: "Error al crear la Marca | Controller:",
-        error: error,
+        error: error.stack,
       });
     }
   };
@@ -54,7 +54,7 @@ export default class BrandsController {
       Logger.error("Error al actualizar la Marca | Controller");
       res.status(400).json({
         msg: "Error al actualizar la Marca | Controller:",
-        error: error,
+        error: error.stack,
       });
     }
   };
@@ -71,7 +71,7 @@ export default class BrandsController {
       Logger.error("Error al borrar la Marca | Controller");
       res.status(400).json({
         msg: "Error al borrar la Marca | Controller:",
-        error: error,
+        error: error.stack,
       });
     }
   };

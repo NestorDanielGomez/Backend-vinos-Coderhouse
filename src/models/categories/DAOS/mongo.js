@@ -20,7 +20,7 @@ export default class CategoriesMongoDAO {
     let arrayOffcategory = [];
     if (id) {
       const category = await this._categories.findById(id);
-      if (category) return [category];
+      if (category) return category;
       else {
         Logger.error("No se pudo obtener la CATEGORIA | MongoDB");
         throw new ApiError(
@@ -31,7 +31,7 @@ export default class CategoriesMongoDAO {
     }
 
     arrayOffcategory = await this._categories.find();
-    if (arrayOffcategory) return [arrayOffcategory];
+    if (arrayOffcategory) return arrayOffcategory;
     else {
       Logger.error("No se pudo traer el listado de CATEGORIAS | MongoDB");
       throw new ApiError(

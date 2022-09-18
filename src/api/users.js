@@ -2,12 +2,12 @@ import Logger from "../services/logger";
 import Config from "../config";
 import UsersFactoryDAO from "../models/users/DAOS/factory";
 import Users from "../models/users";
-import { CartController } from "../controllers/carts";
 import { ApiCarts } from "./carts";
 
 export default class ApiUsers {
   constructor() {
     this.usersDAO = UsersFactoryDAO.get(Config.PERSISTENCE);
+    this.ApiCarts = ApiCarts
   }
 
   async getUser(id) {
@@ -22,18 +22,7 @@ export default class ApiUsers {
 
   async postUser(newData) {
     Logger.info("Creando PRODUCTO en la DB | API");
-    await Users.validate(newData, true);
-    const newUser = await this.usersDAO.post(newData);
-
-    const userId = newUser._id.toString();
-
-    const cart = await CartController.createCart({ userId });
-
-    const newUserCreated = {
-      user: newUser,
-      cart: cart,
-    };
-
+    const newUserCreated = await this.usersDAO.post(newData);
     return newUserCreated;
   }
 
@@ -44,8 +33,7 @@ export default class ApiUsers {
   }
 
   async deleteUser(id) {
-    const user = await this.usersDAO.get(id);
-    const cart = await ApiCarts.getCartByUser(id);
+     const cart = await ApiCarts.getCartByUser(id);
     const cartId = cart._id.toString();
     Logger.info("Borrando CARRO en la DB | API");
     await ApiCarts.deleteCart(cartId);
