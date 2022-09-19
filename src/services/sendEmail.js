@@ -20,8 +20,8 @@ const owner = {
     const mailOptions = {
       from: owner,
       to: Config.GMAIL_EMAIL,
-      subject: 'New order Created',
-      html: `A New order was generated. See info below\n\n\n ${userData}`,
+      subject: 'Nueva orden creada',
+      html: `Nueva orden creada.\n\n\n ${userData}`,
     };
     const response = await gmailTransporter.sendMail(mailOptions);
     return response;
