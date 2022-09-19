@@ -5,6 +5,7 @@ import BrandsRouter from "./brands";
 import VarietalsRouter from "./varietals";
 import UsersRouter from "./users";
 import CartsRouter from "./carts";
+import OrdersRouter from './orders';
 
 export default class MainRouter {
   constructor() {}
@@ -29,6 +30,9 @@ export default class MainRouter {
 
     const cartsRouter = new CartsRouter();
     router.use("/cart", cartsRouter.start());
+
+    const ordersRouter = new OrdersRouter()
+    router.use('/order', ordersRouter.start())
 
     return router;
   }

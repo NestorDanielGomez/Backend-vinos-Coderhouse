@@ -980,5 +980,148 @@ paths:
               schema:
                 type: object
               example:
-                msg: Error al eliminar el producto del carrito
-                error: error
+                msg: ERROR no se pudo eliminar el producto del carrito
+                error: Cast to ObjectId failed for value \"63166b8c4ce632ba78545651d5\" (type string) at path \"_id\" for model \"products\"\n    at model.Query.exec (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\query.js:4884:21)\n    at model.Query.Query.then (D:\\CoderHouse\\Curso 4 - Backend\\Ngomez-backend\\node_modules\\mongoose\\lib\\query.js:4983:15)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+
+  /cart/empty/{userId}:
+    delete:
+      tags:
+        - CARTS
+      summary: Vaciar el carro con el id del usuario
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          example: 632780d36e2962ef578e833e
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Cart is Empty
+                cart:
+                  _id: 632780d46e2962ef578e8340
+                  userId: 632780d36e2962ef578e833e
+                  products: []
+                  createdAt: '2022-09-18T20:34:28.028Z'
+                  updatedAt: '2022-09-18T20:34:28.028Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Error al vaciar el carro
+                error: Cast to ObjectId failed for value "632780d36e2962ef578e833e"         
+                    
+                   
+  
+  /order/{userId}:
+    get:
+      tags:
+        - ORDERS
+      summary: Obtener orden con el id del usuario
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          example: 6327758c1c61e6d587ab971e
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  _id: 6327b86e712e1e0a2a220ef8
+                  userId: 6327758c1c61e6d587ab971e
+                  products:
+                    - productId: 63270dbc6e1f556ad582fb74
+                      items: 5
+                  orderStatus: generated
+                  orderTotal: 5
+                  createdAt: '2022-09-19T00:31:43.005Z'
+                  updatedAt: '2022-09-19T00:31:43.005Z'
+    post:
+      tags:
+        - ORDERS
+      summary: Crear una orden con un id de usuario
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          example: 631e694573fc67e31320235f
+          schema:
+            type: string
+      requestBody:
+        content: {}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Orden crada con exito
+                data:
+                  orderCreated:
+                    userId: 632780d36e2962ef578e833e
+                    products: []
+                    items: 4
+                    orderStatus: generated
+                    orderTotal: 4
+                    _id: 6327b9b45b791828ea936e47
+                    createdAt: '2022-09-19T00:37:08.820Z'
+                    updatedAt: '2022-09-19T00:37:08.820Z'
+
+  /order/{orderId}:
+    put:
+      tags:
+        - ORDERS
+      summary: Order as Complete ( with OrderId)
+      parameters:
+        - name: orderId
+          in: path
+          description: path parameter takes the order id
+          required: true
+          example: 631e694573fc67e31320235f
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                orderStatus: completed
+      responses:
+        '201':
+          description: Created
+    
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                msg: Order updated successfully
+                data:
+                  _id: 631ec06738395224d418d243
+                  userId: 631ebe44f786552eba1afcfd
+                  products:
+                    - productId: 631e8f89ef0ddc800039d13d
+                      items: 4
+                  orderStatus: completed
+                  orderTotal: 4
+                  createdAt: '2022-09-12T05:15:19.965Z'
+                  updatedAt: '2022-09-12T05:15:58.883Z'

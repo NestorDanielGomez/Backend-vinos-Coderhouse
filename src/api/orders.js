@@ -8,18 +8,18 @@ export default class ApiOrder{
     }
 
      async createOrder(userId, cart) {
-        Logger.info('Creating ORDER in the DB');
+        Logger.info('Creando orden en la db | API');
         return this.ordersDAO.post(userId,cart)
 
     }
 
     async getOrder(id) {
-        Logger.info('Reading ORDER database from DB');
+        Logger.info('Leyendo orden en la db | API');
         return this.ordersDAO.get(id)
     }
    
     async completeOrder(orderId, newData) { 
-        Logger.info('Updating status of a order in the DB');
+        Logger.info('Actualizando orden en la db | API');
         return this.ordersDAO.put(orderId, newData)
 
     };
